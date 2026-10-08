@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>길동무 교수 PT</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --blue:#3461B0;   /* 대표색 · 트랙 A(① ②) — [4.8] index_v4.8.html */
+  --ink:#282828;    /* 글자 · 트랙 B(③) */
+  --sub:#666666;    /* 보조 글자 */
+  --bg:#F5F5F5;     /* 바탕 */
+  --tint:#D6DFF0;   /* 연파랑 — 아이콘 원 · 알약 */
+  --c3:#9DB4E0;     /* 중간 파랑 — 트랙 C(수집) · '주의' */
+  --line:#D6D6D6;   /* 구분선 */
+  --mid:#B5B5B5;    /* 회색 선 · 화살표 · 공통 막대 */
+  --red:#D64545;    /* 통행 불가 표시에만 */
+  /* [4.6] 도식 4색 — 사용자: 템플릿 파랑 · 흰색 · 회색 + 하나는 정해 보라 → 주황빛 노랑(파랑과 짝이 되는 따뜻한 색) */
+  --butter:#F5DE9F; /* [4.7] 파스텔 노랑 — 트랙 C(데이터 생산 · 핵심) · 하드웨어 묶음 (진한 노랑은 별로라 해 부드럽게) */
+  --r:20px;         /* 카드 둥글기 (알약은 48px) */
+  --g1:24px;        /* 카드 사이 간격 */
+  --g2:40px;        /* 묶음 사이 간격 */
+  --shadow:none;   /* [4.6] 그림자 없음 — 번짐이 그라데이션처럼 보인다고 함 */
+  /* v3 마크업 호환 이름 */
+  --teal:var(--blue); --yellow:var(--c3); --text:var(--ink); --page:var(--bg);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#282828;overflow:hidden}
+body{font-family:Pretendard,"Pretendard Variable","Malgun Gothic",sans-serif;color:var(--ink);
+  -webkit-font-smoothing:antialiased;user-select:none;cursor:pointer;word-break:keep-all}
+/* ── 16:9 무대: 1920×1080 기준으로 그리고 화면에 맞춰 축소 ── */
+#deck{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);padding:0 100px;display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s}
+.slide.on{opacity:1;visibility:visible}
+/* 머리: 파란 띠 + 흰 알약 막대 */
+.topbar{flex:none;margin:0 -100px;height:156px;background:var(--blue);padding:32px 108px 0}
+.pillbar{height:92px;background:#fff;border-radius:48px;
+  display:flex;align-items:center;gap:28px;padding:0 56px}
+.pillbar .pno{font-size:44px;font-weight:800;color:var(--blue);letter-spacing:-1px;line-height:1;padding-right:28px;border-right:2px solid var(--line);font-variant-numeric:tabular-nums}
+.pillbar h2{font-size:36px;font-weight:700;color:var(--ink);letter-spacing:-.5px;line-height:1.2}
+.pillbar .cap{font-size:28px;color:var(--ink)}
+/* 오른쪽 구분명: 둥근 배경 대신 세로선으로 구분 */
+.pillbar .sec{margin-left:auto;font-size:24px;font-weight:500;color:var(--sub);line-height:1.5;padding-left:26px;border-left:2px solid var(--line);white-space:nowrap}
+/* 본문은 머리와 아래 구분선(바닥 68px) 사이 가운데 — 위아래 여백 36px로 같게 */
+.lead{font-size:27px;color:var(--sub);margin-top:40px;line-height:1.5}
+.lead+.body{padding-top:26px}
+.slide>.body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:36px 0 106px}
+.slide>.body>:first-child{margin-top:0 !important}
+/* 아래 구분: 바닥 68px 선 + 왼쪽 출처 · 오른쪽 쪽번호 */
+.slide::after{content:"";position:absolute;left:100px;right:100px;bottom:68px;height:2px;background:var(--line);pointer-events:none}
+.foot{position:absolute;right:100px;bottom:26px;font-size:20px;color:var(--sub);font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.src{position:absolute;left:100px;bottom:26px;font-size:20px;color:var(--sub)}
+.hl{color:var(--blue)}
+.tc{color:var(--blue)}
+/* 아이콘 */
+.ic{display:inline-flex;width:1em;height:1em;flex:none}
+.ic svg{width:100%;height:100%;stroke-width:1.8}
+.bubble{width:96px;height:96px;border-radius:50%;background:var(--tint);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;font-size:50px;flex:none}
+.bubble.sm{width:76px;height:76px;font-size:38px}
+.bubble.ink,.bubble.y{background:var(--tint);color:var(--blue)}
+/* 카드·배너 — 둥글기 20px, 그림자 하나로 통일 */
+.card,.tint{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:34px 40px}
+/* 결론 배너: 파란 면 대신 흰 카드 + 왼쪽 파란 세로선 (머리 파란 띠와 겹치지 않게) */
+.banner{background:#fff;color:var(--ink);border-radius:var(--r);box-shadow:var(--shadow);padding:26px 40px}
+.banner .t{font-size:31px;font-weight:700;color:var(--ink)}
+.banner .d{font-size:25px;color:var(--sub);margin-top:8px;line-height:1.5}
+.banner .hl{color:var(--blue)}
+.banner span.hl{background:var(--tint);padding:2px 12px;border-radius:8px}
+.banner.solid{background:var(--blue);color:#fff;padding:30px 44px}
+.banner.solid .t{color:#fff}
+.banner.solid .d{color:var(--tint)}
+.banner.solid span.hl{color:var(--blue);background:#fff}
+.banner.solid div.hl{color:var(--tint);background:none}
+.note{background:var(--tint);border-radius:var(--r);padding:26px 40px}
+.note .t{font-size:32px;font-weight:700;color:var(--ink)}
+.note .d{font-size:27px;color:var(--ink);margin-top:8px;line-height:1.5}
+.pill{display:inline-block;padding:8px 20px;border-radius:999px;font-size:24px;font-weight:700;background:var(--tint);color:var(--blue)}
+.pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+/* 가로로 읽히는 행: 아이콘 | 제목 | 설명 */
+.row{display:flex;align-items:center;gap:28px}
+.row .tt{font-size:32px;font-weight:700;color:var(--ink)}
+.row .dd{font-size:26px;color:var(--sub);line-height:1.5;margin-top:6px}
+.grid{display:grid;gap:var(--g1)}
+.big{font-size:64px;font-weight:800;color:var(--blue);letter-spacing:-1px;line-height:1.2}
+.para{font-size:27px;line-height:1.6;color:var(--ink)}
+.sh3{font-size:28px;font-weight:700;color:var(--blue);margin-bottom:18px}
+.ul{font-size:26px;line-height:1.65;margin:22px 0 0 30px}
+/* 아이콘 | 이름 | 값 한 줄 */
+.wl{display:flex;align-items:center;gap:22px;padding:16px 0;border-bottom:2px solid var(--line)}
+.wl:last-child{border-bottom:none;padding-bottom:0}
+.wl>.ic{font-size:42px;color:var(--blue)}
+.wl>b{width:380px;flex:none;font-size:28px;color:var(--ink)}
+.wl>span{font-size:27px;color:var(--sub);line-height:1.5}
+/* 라벨 | 값 한 줄 */
+.kv{display:flex;align-items:baseline;gap:24px;padding:16px 0;border-bottom:2px solid var(--line)}
+.kv:last-child{border-bottom:none;padding-bottom:0}
+.kv>b{width:90px;flex:none;font-size:27px;color:var(--blue)}
+.kv>span{font-size:27px;color:var(--ink);line-height:1.5}
+/* 번호 | 이름 | 설명 한 줄 */
+.st{display:flex;align-items:center;gap:24px;padding:14px 0;border-bottom:2px solid var(--line)}
+.st:last-child{border-bottom:none}
+.st>b{width:52px;height:52px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.st>.tt{width:190px;flex:none;font-size:30px;font-weight:700;color:var(--ink)}
+.st>.dd{font-size:26px;color:var(--sub)}
+/* 두 열 묶음: 양쪽 카드 높이 맞춤 */
+.cols{display:grid;gap:var(--g2);align-items:stretch}
+.cols>.card,.cols>.tint{height:100%}
+/* 표지 */
+.cover .cv{flex:1;display:flex;align-items:center;gap:72px;padding:36px 0 106px}
+.cv-txt{flex:1;min-width:0}
+.cv-sub{font-size:30px;color:var(--sub);line-height:1.5}
+.cover h1{margin-top:34px;line-height:1.15}
+.cover h1 .l1{display:inline-block;font-size:80px;font-weight:500;color:var(--ink);letter-spacing:-2px}
+.cover h1 .l2{display:inline-block;font-size:136px;font-weight:800;color:var(--blue);letter-spacing:-4px;margin-top:8px}
+.cv-info{margin-top:64px;border-top:2px solid var(--line);padding-top:30px;display:flex;flex-wrap:wrap;gap:16px 44px;font-size:26px;color:var(--ink)}
+.cv-info b{margin-right:14px}
+.cv-map{flex:none;width:600px;height:744px;padding:24px 28px;display:flex;align-items:center;justify-content:center}
+.cv-map svg{height:100%;width:auto;display:block}
+/* 목차 */
+.toc .body{align-items:center;justify-content:center}
+.toc-t{font-size:72px;font-weight:800;color:var(--blue);letter-spacing:24px;margin-right:-24px;text-align:center;line-height:1.2}
+.toc-line{width:420px;height:2px;background:var(--line);margin:26px auto 56px}
+.toc-g{display:grid;grid-template-columns:640px 640px;grid-template-rows:repeat(3,112px);grid-auto-flow:column;gap:28px 48px}
+.tp{background:#fff;border-radius:48px;box-shadow:var(--shadow);display:flex;align-items:center;gap:30px;padding:0 48px}
+.tp b{font-size:42px;font-weight:800;color:var(--blue);width:92px;flex:none;border-right:2px solid var(--line);font-variant-numeric:tabular-nums}
+.tp span{font-size:36px;color:var(--ink)}
+/* 마무리 */
+.end .body{align-items:center;justify-content:center;text-align:center}
+.end-sub{font-size:30px;color:var(--sub)}
+.end h1{margin-top:22px;line-height:1.15}
+.end h1 .l1{display:inline-block;font-size:72px;font-weight:500;color:var(--ink);letter-spacing:-2px}
+.end h1 .l2{display:inline-block;font-size:100px;font-weight:800;color:var(--blue);letter-spacing:-3px;margin-top:6px}
+.end .three{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--g1);margin-top:56px;width:100%;text-align:left}
+.end .three .card{padding:30px 36px}
+.end .three b{display:block;font-size:30px;color:var(--blue)}
+.end .three p{font-size:25px;line-height:1.55;color:var(--ink);margin-top:10px}
+.end-info{margin-top:48px;border-top:2px solid var(--line);padding-top:26px;width:100%;font-size:28px;font-weight:700;color:var(--ink)}
+/* 비교표 · 필요 데이터 표 */
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;margin-top:0;background:#fff;border-radius:var(--r);box-shadow:var(--shadow)}
+.cmp th{background:var(--blue);color:#fff;font-weight:700;padding:18px 18px;text-align:center;font-size:25px;line-height:1.35}
+.cmp th:first-child{border-top-left-radius:var(--r);text-align:left;padding-left:34px}
+.cmp th:last-child{border-top-right-radius:var(--r)}
+.cmp td{padding:12px 18px;text-align:center;border-bottom:1px solid var(--line)}
+.cmp tr:last-child td{border-bottom:none}
+.cmp tr:last-child td:first-child{border-bottom-left-radius:var(--r)}
+.cmp tr:last-child td:last-child{border-bottom-right-radius:var(--r)}
+.cmp td:first-child{text-align:left;padding-left:34px;font-weight:700;color:var(--ink)}
+.cmp td:first-child span{display:block;font-size:24px;font-weight:400;color:var(--sub);margin-top:2px}
+.cmp td .ic{font-size:40px}
+.cmp .o{color:var(--blue)} .cmp .x{color:var(--mid)} .cmp .p{color:var(--sub);font-size:24px;font-weight:700}
+.cmp tr.me td{background:var(--blue);color:#fff}
+.cmp tr.me td:first-child{color:#fff}
+.cmp tr.me td:first-child span{color:var(--tint)}
+/* 순환도 */
+.cyc{position:relative;width:1000px;height:640px}
+.node{position:absolute;width:420px;border-radius:var(--r);padding:24px 32px;color:#fff;background:var(--blue);box-shadow:var(--shadow)}
+.node.ink{background:var(--c3);color:var(--ink)}
+.node .k{font-size:24px;font-weight:700;color:var(--tint)}
+.node .n{font-size:42px;font-weight:800;margin-top:8px}
+.node .s{font-size:24px;color:var(--tint);margin-top:6px}
+.node.ink .k,.node.ink .s{color:var(--ink)}
+.cyc>svg{position:absolute;inset:0}
+.cyc .lb{position:absolute;font-size:24px;font-weight:700;color:var(--sub)}
+/* 팀 */
+.team .row{background:#fff;border-radius:var(--r);padding:26px 38px;box-shadow:var(--shadow)}
+.team .nm{width:170px;flex:none;align-self:stretch;display:flex;flex-direction:column;justify-content:center;border-right:2px solid var(--line)}
+.team .nm b{font-size:36px;color:var(--ink)}
+.team .nm span{display:block;font-size:24px;color:var(--blue);font-weight:700;margin-top:4px}
+/* 맡은 파트(크게) | 할 일 3줄 — 트랙 대신 무엇을 만드는지 한눈에 (사용자 2026-10-08) */
+.team .pt{width:360px;flex:none;align-self:stretch;display:flex;align-items:center;gap:20px;padding-right:24px;border-right:2px solid var(--line)}
+.team .pt .ic{font-size:48px;color:var(--blue)}
+.team .pt b{font-size:32px;font-weight:800;color:var(--blue);line-height:1.3}
+.team .wk{list-style:none;font-size:26px;color:var(--ink);line-height:1.45}
+.team .wk li{position:relative;padding-left:22px}
+.team .wk li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--mid)}
+.team .row{padding:22px 38px}
+/* 박스 없이 밑줄로만 나눈 목록 (사용자 2026-10-08: 모두 박스로 하지 않고 일부는 밑줄로만) */
+.ln>*{padding:26px 0;border-bottom:2px solid var(--line)}
+.ln>*:first-child{padding-top:0}
+.ln>*:last-child{border-bottom:none;padding-bottom:0}
+/* 이번 학기 목표: 만들 것(카드) → 이용자에게 주는 도움(밑줄 글) — 수치보다 도움 (사용자 2026-10-08) */
+.vhead,.vrow{display:grid;grid-template-columns:900px 64px 1fr;align-items:center}
+.vhead{font-size:26px;font-weight:700;color:var(--blue);margin-bottom:14px}
+.vlist{display:grid;gap:18px}
+.vmk{display:flex;align-items:center;gap:26px;padding:24px 34px}
+.vmk .tt{font-size:32px;font-weight:700;color:var(--ink)}
+.vmk .dd{font-size:26px;color:var(--sub);margin-top:4px;line-height:1.45}
+.varr{font-size:40px;color:var(--mid);justify-self:center}
+.vben{font-size:30px;color:var(--ink);line-height:1.4;padding:20px 0;border-bottom:2px solid var(--line)}
+.vben b{color:var(--blue)}
+.vrow:last-child .vben{border-bottom:none}
+/* [4.7] 필요 데이터 장: 큰 글씨 — '없음' 카드 + '일부 · 있음' 밑줄 목록 */
+.nd-no{padding:30px 40px}
+.nd-h{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.nd-h .ic{font-size:38px;color:var(--sub)}
+.nd-no .wl{padding:22px 0}
+.nd-no .wl:last-child{padding-bottom:0}
+.nd-no .wl>b{width:330px;font-size:32px}
+.nd-no .wl>span{font-size:28px}
+.nd-part{display:flex;flex-direction:column;justify-content:center}
+.nd-h2{font-size:28px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.nd-gap{margin-top:30px}
+.nd-part .wl{padding:20px 0}
+.nd-part .wl:last-child{padding-bottom:0}
+.nd-part .wl>b{width:470px;font-size:29px}
+.nd-part .wl>span{font-size:27px}
+/* [4.6] 그림자 대신 1px 회색 테두리로 흰 카드 구분 (평평한 색만) */
+.card,.tint,.tp,.team .row,table.cmp{border:1px solid var(--line)}
+/* [4.5] 팀: 소프트웨어 2명 · 하드웨어 2명 — 묶음 칸 색은 도식 트랙 색(파랑 · 청록)과 맞춤 */
+.tgrp{display:grid;grid-template-columns:176px 1fr;gap:16px;align-items:stretch}
+.tgrp+.tgrp{margin-top:18px}
+.tgrp>.grid{gap:12px}
+.tg{border-radius:var(--r);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:0 12px;font-size:27px;font-weight:800;white-space:nowrap}
+.tg .ic{font-size:46px}
+.tg.sw{background:var(--blue)}
+.tg.hw{background:var(--butter);color:var(--ink)}
+/* [4.5] GNN 범례: 쉬운 말 + 선 모양 견본 · [4.8] '선 = 어떻게 알았나 / 색 = 통행 등급' 두 줄 */
+.lgd{display:grid;gap:10px;margin-top:18px;font-size:26px;color:var(--ink)}
+.lgd>div{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.lsw{display:inline-block;width:40px;height:8px;border-radius:4px;margin-left:12px}
+.lgd>div>.lsw:first-child{margin-left:0}
+.lsw-solid,.lsw-dash,.lsw-gray{height:0;border-radius:0}
+.lsw-solid{border-top:6px solid var(--ink)}
+.lsw-dash{border-top:6px dotted var(--ink)}
+.lgd b{width:40px;flex:none;font-size:24px;font-weight:800;color:var(--sub)}
+.lsw-gray{border-top:5px solid var(--mid)}
+/* ② 우선순위 규칙 그림: 이용자가 고른다 → 거르고 좁힌다(예시 지도) → 이유와 함께 알려 준다 */
+.flow3{display:grid;grid-template-columns:420px 44px 1fr 44px 410px;gap:14px;align-items:stretch}
+.f-arrow{display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:44px}
+.f-k{font-size:28px;font-weight:800;color:var(--blue);margin-bottom:10px}
+.f-in{background:var(--tint);border-radius:var(--r);padding:32px 34px;display:flex;flex-direction:column;justify-content:center}
+.f-set{display:flex;align-items:flex-start;gap:18px;padding:20px 0;border-bottom:2px solid #fff}
+.f-set:last-of-type{border-bottom:none}
+.f-set>.ic{font-size:40px;color:var(--blue);margin-top:2px}
+.f-n{font-size:30px;font-weight:700;color:var(--ink)}
+.f-v{font-size:27px;color:var(--ink);margin-top:4px;line-height:1.4}
+.f-note{font-size:25px;color:var(--sub);margin-top:14px;line-height:1.45}
+.f-mid{padding:28px 32px;display:flex;flex-direction:column;justify-content:center}
+.f-mid svg{width:100%;display:block}
+.f-ex{font-size:24px;font-weight:500;color:var(--sub);margin-left:10px}
+.f-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px 26px;margin-top:14px}
+.f-steps>div{display:flex;gap:14px;align-items:flex-start}
+.f-steps b{width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;flex:none}
+.f-steps span{font-size:24px;color:var(--sub);line-height:1.4}
+.f-steps em{display:block;font-style:normal;font-size:27px;font-weight:700;color:var(--ink)}
+.banner.solid.f-out{padding:32px 36px;display:flex;flex-direction:column;justify-content:center}
+.f-out .f-k{color:var(--tint)}
+.f-rec{display:flex;align-items:baseline;gap:14px;font-size:34px;font-weight:700;color:#fff;line-height:1.3}
+.f-rec b{font-size:84px;font-weight:800;line-height:1.25}
+.f-why{font-size:31px;font-weight:700;color:#fff;line-height:1.4;margin-top:8px}
+.f-alt,.f-pre{margin-top:22px;padding-top:20px;border-top:2px solid rgba(255,255,255,.18)}
+.f-alt b,.f-pre b{display:block;font-size:31px;color:#fff}
+.f-alt span,.f-pre span{display:block;margin-top:4px;font-size:27px;color:var(--tint);line-height:1.4}
+/* 장별 채움 (화면 비율) — 여백보다 글자를 키움. 장 고리(fx-) 클래스로 지정 */
+.fx-prob .tint.row{padding:38px 40px}
+.fx-prob .tint.row .tt{font-size:34px}
+.fx-prob .tint.row .dd{font-size:28px}
+.fx-prob .big{font-size:70px}
+.fx-prob .banner .t{font-size:33px}
+.fx-base .body .tint{padding:40px 40px}
+.fx-base .big{font-size:76px}
+.fx-base .st{padding:25px 0}
+.fx-base .st>.tt{font-size:32px}
+.fx-base .st>.dd{font-size:28px}
+.fx-gnn .ul{font-size:28px;line-height:1.7;margin-top:24px}
+.fx-gnn .card .tt{font-size:34px}
+/* [4.8] GNN 장: 보는 것 → 이웃끼리 배운다(그림) → 내놓는 것 — ② 장과 같은 흐름 그림 */
+.fx-gnn .flow3{grid-template-columns:430px 44px 1fr 44px 460px}
+.fx-gnn .f-set{padding:16px 0}
+.fx-gnn .f-mid svg{height:330px;width:auto;margin:6px auto 0}
+.fx-gnn .f-why{font-size:30px;margin-top:0}
+.fx-gnn .f-alt{margin-top:18px;padding-top:16px}
+.fx-gnn .lgd .ind{padding-left:50px}
+.fx-gnn .note{margin-top:24px}
+/* [4.8] ② 장: 추천 길 이름(평지길)이 들어가게 · 걸러내기 설명이 길어진 만큼 지도는 조금 줄이고 결과 칸 글은 키움 */
+.fx-rule .f-rec b{font-size:72px}
+.fx-rule .f-mid svg{height:372px;width:auto;margin:0 auto}
+.fx-rule .f-why{font-size:33px}
+.fx-rule .f-alt span,.fx-rule .f-pre span{font-size:28px}
+/* 쪽 이동 힌트(첫 장에서만, 처음 몇 초) */
+#hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);font:16px Pretendard,"Malgun Gothic",sans-serif;
+  color:#fff;background:rgba(0,0,0,.55);padding:8px 16px;border-radius:999px;transition:opacity .3s;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="deck">
+<!-- 1. 표지 -->
+<section class="slide cover" id="s1">
+  <header class="topbar"><div class="pillbar"><span class="cap">2026-2학기 제주대학교 캡스톤디자인</span><span class="sec">지도교수 PT</span></div></header>
+  <div class="cv">
+    <div class="cv-txt">
+      <div class="cv-sub">휠체어·유모차 이용자를 위한 센서 기반 노면정보 수집 및<br>맞춤형 안전경로 추천 시스템 개발</div>
+      <h1><span class="l1">같은 길도, 사람마다</span><br><span class="l2">다른 길</span></h1>
+      <div class="cv-info"><span><b>팀</b>길동무</span><span><b>팀원</b>강승준(팀장) · 이은 · 양인권 · 염지석</span><span><b>지도교수</b>길준민</span></div>
+    </div>
+    <div class="cv-map card"><svg class="map" viewBox="0 0 640 800" fill="none">
+    <g stroke="#B5B5B5" stroke-width="4">
+      <line x1="270" y1="60" x2="450" y2="75"/><line x1="270" y1="60" x2="200" y2="270"/>
+      <line x1="200" y1="270" x2="380" y2="245"/><line x1="380" y1="245" x2="300" y2="400"/>
+      <line x1="380" y1="245" x2="510" y2="390"/><line x1="510" y1="390" x2="510" y2="610"/>
+      <line x1="80" y1="410" x2="300" y2="400"/><line x1="160" y1="560" x2="350" y2="590"/>
+      <line x1="350" y1="590" x2="510" y2="610"/>
+    </g>
+    <g stroke="var(--red)" stroke-width="4" stroke-dasharray="12 10">
+      <line x1="300" y1="400" x2="510" y2="390"/><line x1="300" y1="400" x2="350" y2="590"/>
+    </g>
+    <polyline points="40,740 160,560 80,410 200,270 380,245 450,75" stroke="var(--blue)" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+    <g fill="#B5B5B5"><circle cx="270" cy="60" r="12"/><circle cx="300" cy="400" r="12"/><circle cx="350" cy="590" r="12"/><circle cx="510" cy="390" r="12"/><circle cx="510" cy="610" r="12"/></g>
+    <g fill="var(--blue)"><circle cx="40" cy="740" r="18"/><circle cx="160" cy="560" r="18"/><circle cx="80" cy="410" r="18"/><circle cx="200" cy="270" r="18"/><circle cx="380" cy="245" r="18"/><circle cx="450" cy="75" r="18"/></g>
+    <g fill="var(--red)"><circle cx="405" cy="395" r="24"/><circle cx="325" cy="495" r="24"/></g>
+    <g stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"><path d="M396 386l18 18M414 386l-18 18M316 486l18 18M334 486l-18 18"/></g>
+    <text x="72" y="758" fill="var(--blue)" font-size="34" font-weight="700">출발</text>
+    <text x="482" y="84" fill="var(--blue)" font-size="34" font-weight="700">도착</text>
+    <text x="640" y="790" fill="var(--red)" font-size="32" text-anchor="end">턱·급경사 구간은 경로에서 제외</text>
+  </svg></div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 01 / 14</div>
+</section>
+<!-- 2. 목차 -->
+<section class="slide toc" id="s2">
+  <header class="topbar"><div class="pillbar"><span class="cap">2026-2학기 제주대학교 캡스톤디자인</span><span class="sec">지도교수 PT</span></div></header>
+  <div class="body">
+    <h2 class="toc-t">목차</h2>
+    <div class="toc-line"></div>
+    <div class="toc-g">
+      <div class="tp"><b>01</b><span>문제</span></div>
+      <div class="tp"><b>02</b><span>차별성</span></div>
+      <div class="tp"><b>03</b><span>해결 방안</span></div>
+      <div class="tp"><b>04</b><span>알고리즘</span></div>
+      <div class="tp"><b>05</b><span>이번 학기 목표</span></div>
+      <div class="tp"><b>06</b><span>팀 구성</span></div>
+    </div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 02 / 14</div>
+</section>
+<!-- 3. 문제 -->
+<section class="slide fx-prob" id="s3">
+  <header class="topbar"><div class="pillbar"><span class="pno">01</span><h2>지도 앱이 알려준 길, 휠체어로 갈 수 있을까요?</h2><span class="sec">문제</span></div></header>
+  <div class="body">
+  <div class="grid cols" style="grid-template-columns:1.05fr 1fr">
+    <div class="grid" style="gap:28px">
+      <div class="tint row"><div class="bubble sm"><i class="ic" data-i="map-2"></i></div>
+        <div><div class="tt">지도 앱은 '최단 보행경로'를 안내</div><div class="dd">경사·턱·보도 폭은 경로 계산에 들어가지 않음</div></div></div>
+      <div class="tint row"><div class="bubble sm"><i class="ic" data-i="stairs-up"></i></div>
+        <div><div class="tt">현장에는 턱 · 좁은 보도 · 급경사</div><div class="dd">출발 전에는 알 방법이 없음</div></div></div>
+      <div class="tint row"><div class="bubble sm ink"><i class="ic" data-i="arrow-back-up"></i></div>
+        <div><div class="tt">되돌아 나와 다른 길을 찾아야 함</div><div class="dd">시간·체력 소모, 이동 자체를 포기하기도</div></div></div>
+    </div>
+    <div class="grid" style="gap:22px;align-content:start">
+      <div class="row" style="border-bottom:2px solid var(--line);padding:20px 0 30px"><div class="big" style="width:340px">135만 명</div><div class="dd" style="font-size:28px">등록장애인 263만 명 중 51%<br>지체 · 뇌병변 — 거동이 불편한 장애</div></div>
+      <div class="row" style="border-bottom:2px solid var(--line);padding:20px 0 30px"><div class="big" style="width:340px">123만 명</div><div class="dd" style="font-size:28px">장기요양 인정 노인, 1년 새 6% 증가<br>보행보조기구 지원 대상도 늘어남</div></div>
+      <div class="row" style="padding:20px 0 0"><div class="big" style="width:340px">1,300만+</div><div class="dd" style="font-size:28px">제주 연간 방문객이 오가는 길<br>경사·요철이 많은 현무암 지형</div></div>
+    </div>
+  </div>
+  <div class="banner solid" style="margin-top:44px"><div class="t">'평탄하고 턱 없는 길'이 필요한 사람은 <span class="hl">특정 소수가 아닙니다.</span></div></div>
+  </div>
+  <div class="src">출처: 보건복지부 2025년도 등록장애인 현황(2025년 말) · 국민건강보험공단 2025 노인장기요양보험 통계연보 · 제주특별자치도 관광객 입도 통계</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 03 / 14</div>
+</section>
+<!-- 4. 문제의 두 겹 -->
+<section class="slide" id="s4">
+  <header class="topbar"><div class="pillbar"><span class="pno">01</span><h2>길을 고르려면 두 가지가 모자랍니다</h2><span class="sec">문제</span></div></header>
+  <div class="body">
+  <div class="grid cols" style="grid-template-columns:1fr 1fr">
+    <div class="card">
+      <div class="row" style="gap:22px"><div class="bubble sm"><i class="ic" data-i="database"></i></div><div class="tt">데이터가 없다</div></div>
+      <div style="margin-top:18px">
+        <div class="wl"><i class="ic" data-i="ruler-measure"></i><b style="width:230px">길 정보가 없음</b><span>턱 · 유효 폭 · 노면 상태가 공개 지도 데이터에 없음</span></div>
+        <div class="wl"><i class="ic" data-i="map-pin"></i><b style="width:230px">시설 단위뿐</b><span>무장애 정보는 건물 · 시설 단위 — 가는 길은 모름</span></div>
+        <div class="wl"><i class="ic" data-i="barrier-block"></i><b style="width:230px">금방 낡음</b><span>한 번 조사해도 공사 · 파손 · 불법 주정차로 금방 바뀜</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row" style="gap:22px"><div class="bubble sm ink"><i class="ic" data-i="users"></i></div><div class="tt">같은 길도 사람마다 다르다</div></div>
+      <div style="margin-top:18px">
+        <div class="wl"><i class="ic" data-i="wheelchair"></i><b style="width:340px">수동휠체어 (자가추진)</b><span>오르막 · 횡경사</span></div>
+        <div class="wl"><i class="ic" data-i="friends"></i><b style="width:340px">수동휠체어 (동반자 보조)</b><span>턱 · 내리막</span></div>
+        <div class="wl"><i class="ic" data-i="disabled-2"></i><b style="width:340px">전동휠체어</b><span>턱 · 유효 폭</span></div>
+        <div class="wl"><i class="ic" data-i="old"></i><b style="width:340px">보행기 · 실버카 (노인)</b><span>턱 · 경사 · 노면 요철</span></div>
+        <div class="wl"><i class="ic" data-i="baby-carriage"></i><b style="width:340px">유모차</b><span>노면 진동 · 턱</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="banner solid" style="margin-top:24px">
+    <div class="t"><span class="hl" style="margin-right:20px">핵심 질문</span>부족한 데이터 위에서, 사람마다 다른 '좋은 길'을 어떻게 고를 것인가?</div>
+    <div class="d">데이터를 직접 모으는 일과, 그 위에서 사람마다 다른 길을 고르는 알고리즘을 함께 개발합니다</div>
+  </div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 04 / 14</div>
+</section>
+<!-- 5. 필요한데 없는 데이터 -->
+<section class="slide fx-need" id="s5">
+  <header class="topbar"><div class="pillbar"><span class="pno">01</span><h2>휠체어 동선에 필요한 데이터, 대부분 없습니다</h2><span class="sec">문제</span></div></header>
+  <div class="body">
+  <div class="grid cols" style="grid-template-columns:1.15fr 1fr">
+    <div class="card nd-no">
+      <div class="nd-h"><i class="ic" data-i="x"></i>공개 지도 데이터에 없음</div>
+      <div class="wl"><b>턱 높이</b><span>2cm만 넘어도 바퀴가 걸림</span></div>
+      <div class="wl"><b>유효 폭</b><span>가로수 · 적치물로 실제 폭이 다름</span></div>
+      <div class="wl"><b>횡경사</b><span>한쪽으로 쏠려 계속 힘이 듦</span></div>
+      <div class="wl"><b>노면 상태</b><span>파손 · 요철은 진동 · 전복 위험</span></div>
+      <div class="wl"><b>공사 · 적치물 (최신)</b><span>어제 되던 길이 오늘 막힘</span></div>
+    </div>
+    <div class="nd-part">
+      <div class="nd-h2">일부만 있음</div>
+      <div class="wl"><b>종경사 (오르내림)</b><span>지형 자료로 추정</span></div>
+      <div class="wl"><b>횡단보도 턱낮춤</b><span>있음 · 없음만</span></div>
+      <div class="wl"><b>엘리베이터 (육교 · 지하도 · 건물)</b><span>시설 단위</span></div>
+      <div class="nd-h2 nd-gap">있지만 길과 연결 안 됨</div>
+      <div class="wl"><b>장애인 화장실 · 휠체어 충전소</b><span>위치만 있음</span></div>
+    </div>
+  </div>
+  <div class="banner solid" style="margin-top:24px">
+    <div class="t" style="font-size:30px">길(구간) 단위로 필요한 정보는 <span class="hl">대부분 비어 있습니다</span></div>
+    <div class="d">그래서 직접 잽니다 — 현장 실측 · 수집 앱 · 부착형 센서</div>
+  </div>
+  </div>
+  <div class="src">근거: R&amp;D 계획서 · 공개 데이터 조사(OpenStreetMap 태그 · 전국횡단보도표준데이터)</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 05 / 14</div>
+</section>
+<!-- 6. 차별성 -->
+<section class="slide" id="s6">
+  <header class="topbar"><div class="pillbar"><span class="pno">02</span><h2>국외에는 연구가 있고, 국내에는 구간 데이터가 없습니다</h2><span class="sec">차별성</span></div></header>
+  <div class="lead" style="margin-top:36px">기존 접근은 대부분 '이미 있는 데이터'를 활용합니다. 우리는 데이터를 만드는 것부터 시작하려 합니다.</div>
+  <div class="body">
+  <table class="cmp">
+    <tr><th style="width:30%">서비스</th><th>경로 안내</th><th>구간 단위<br>접근성</th><th>이동 유형별<br>맞춤 경로</th><th>국내·제주<br>데이터</th><th>데이터 직접<br>생산·갱신</th></tr>
+    <tr><td>상용 지도<span>네이버 · 카카오 · Google</span></td><td class="o"><i class="ic" data-i="check"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="o"><i class="ic" data-i="check"></i></td><td class="x"><i class="ic" data-i="x"></i></td></tr>
+    <tr><td>국내 무장애 정보 서비스<span>시설 단위</span></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="o"><i class="ic" data-i="check"></i></td><td class="x"><i class="ic" data-i="x"></i></td></tr>
+    <tr><td>AccessMap<span>미국 시애틀 · 공공데이터 의존</span></td><td class="o"><i class="ic" data-i="check"></i></td><td class="o"><i class="ic" data-i="check"></i></td><td class="o"><i class="ic" data-i="check"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td></tr>
+    <tr><td>Project Sidewalk<span>미국 · 스트리트뷰 수동 라벨링</span></td><td class="x"><i class="ic" data-i="x"></i></td><td class="o"><i class="ic" data-i="check"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="p">일부</td></tr>
+    <tr><td>Wheelmap<span>독일 · OSM 태깅</span></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="x"><i class="ic" data-i="x"></i></td><td class="p">일부</td><td class="p">일부</td></tr>
+    <tr class="me"><td style="font-size:32px">길동무<span>본 과제 (이번 학기 목표)</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td></tr>
+  </table>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 06 / 14</div>
+</section>
+<!-- 7. 해결 방안 — [4.8] 순환도: 이용자 이동 → 트랙 C 데이터 모으기 → 트랙 A 길 골라 주기 → 이용자 (반드시 도는 고리는 실선),
+     트랙 B(확장 과제)는 점선 — "어디서 시작해 어디로 도는지 모름", "선택 과제인 B가 고리 한 칸", "도식에 이용자가 없음" -->
+<section class="slide" id="s7">
+  <header class="topbar"><div class="pillbar"><span class="pno">03</span><h2>한 사람의 이동이, 다음 사람의 안전이 됩니다</h2><span class="sec">해결 방안</span></div></header>
+  <div class="body">
+  <div style="display:flex;gap:56px;align-items:stretch">
+    <div class="cyc" style="height:720px">
+      <svg viewBox="0 0 1000 720" fill="none">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#B5B5B5"/></marker></defs>
+        <g stroke="#B5B5B5" stroke-width="4" marker-end="url(#ah)">
+          <line x1="200" y1="170" x2="200" y2="520"/>
+          <line x1="360" y1="526" x2="616" y2="200"/>
+          <line x1="576" y1="85" x2="406" y2="85"/>
+        </g>
+        <g stroke="#B5B5B5" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#ah)">
+          <line x1="406" y1="625" x2="576" y2="625"/>
+          <line x1="790" y1="520" x2="790" y2="196"/>
+        </g>
+      </svg>
+      <div class="node" style="left:0;top:0;width:400px;padding:24px 32px;background:#fff;color:var(--ink);border:1px solid var(--line)">
+        <div class="k" style="color:var(--ink)">이용자</div>
+        <div class="n" style="font-size:38px">안내받고 이동</div>
+        <div class="s" style="color:var(--ink)">다니는 동안 노면이 자동 기록</div></div>
+      <div class="node" style="left:580px;top:0"><div class="k">트랙 A · ① ②</div><div class="n">길 골라 주기</div><div class="s">① 베이스라인 + ② 우선순위 규칙</div></div>
+      <div class="node ink" style="left:0;top:530px;width:400px;background:var(--butter)"><div class="k">트랙 C · 핵심</div><div class="n">데이터 모으기</div><div class="s">처음 팀 실측 · 이후 앱 · 센서</div></div>
+      <div class="node" style="left:580px;top:530px;background:var(--sub);color:#fff"><div class="k">트랙 B · 확장 과제</div><div class="n">AI로 보완</div><div class="s">추정 · 개인화 · 재탐색 (가능하면)</div></div>
+      <div class="lb" style="left:218px;top:330px">주행 기록 · 신고</div>
+      <div class="lb" style="left:500px;top:370px">구간 데이터</div>
+      <div class="lb" style="left:432px;top:100px">추천 경로</div>
+      <div class="lb" style="left:446px;top:580px">잰 구간</div>
+      <div class="lb" style="left:808px;top:340px">추정값</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:34px;font-weight:800;color:var(--ink);margin-bottom:34px">데이터는 이렇게 쌓입니다</div>
+      <div class="ln">
+        <div class="row"><div class="bubble sm"><i class="ic" data-i="walk"></i></div><div><div class="tt">처음엔 팀이 직접 수집</div><div class="dd">현장 실측과 센서 부착 주행으로 초기 데이터 확보</div></div></div>
+        <div class="row"><div class="bubble sm"><i class="ic" data-i="refresh"></i></div><div><div class="tt">이후엔 이용자의 이동이 수집</div><div class="dd">앱·센서가 노면 정보를 자동 기록해 경로에 반영</div></div></div>
+        <div class="row"><div class="bubble sm"><i class="ic" data-i="trending-up"></i></div><div><div class="tt">쓸수록 정확해지는 서비스</div><div class="dd">한 번 조사하고 끝나는 방식과 다른 점</div></div></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 07 / 14</div>
+</section>
+<!-- 8. 트랙 C -->
+<section class="slide fx-trackc" id="s8">
+  <header class="topbar"><div class="pillbar"><span class="pno">03</span><h2>데이터를 소비하지 않고, <span class="tc">직접 생산</span>합니다</h2><span class="sec">트랙 C · 본 과제의 핵심</span></div></header>
+  <div class="body">
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card">
+      <div class="row" style="gap:22px"><div class="bubble sm"><i class="ic" data-i="ruler-measure"></i></div><div><div class="tt">현장 실측</div><div class="pill" style="margin-top:8px">정답 데이터</div></div></div>
+      <ul style="font-size:25px;line-height:1.6;margin:26px 0 0 28px;color:var(--text)"><li>줄자 · 경사계 · 캘리퍼로 폭 · 경사 · 턱 높이 직접 측정</li><li>같은 절차로 재서 측정자 차이 줄임</li><li><b>센서 추정을 검증할 정답 기준</b></li></ul>
+    </div>
+    <div class="card">
+      <div class="row" style="gap:22px"><div class="bubble sm"><i class="ic" data-i="device-mobile"></i></div><div><div class="tt">스마트폰 앱 수집</div><div class="pill" style="margin-top:8px">크라우드소싱</div></div></div>
+      <ul style="font-size:25px;line-height:1.6;margin:26px 0 0 28px;color:var(--text)"><li>이동 중 GPS 위치와 흔들림(관성) 센서 값을 자동 기록</li><li>길 위 장애물은 사진으로 신고</li><li><b>이용자가 늘수록 데이터가 쌓이는 구조</b></li></ul>
+    </div>
+    <div class="card">
+      <div class="row" style="gap:22px"><div class="bubble sm ink"><i class="ic" data-i="cpu"></i></div><div><div class="tt">부착형 센서 노드</div><div class="pill" style="margin-top:8px">ESP32 + IMU</div></div></div>
+      <ul style="font-size:25px;line-height:1.6;margin:26px 0 0 28px;color:var(--text)"><li>흔들림 센서(IMU)를 휠체어 · 유모차 프레임에 달고 블루투스로 연결</li><li>진동으로 노면 등급 · 턱 지나감 추정</li><li><b>1세트 제작비 수만 원 수준</b></li></ul>
+    </div>
+  </div>
+  <div class="grid cols" style="grid-template-columns:1fr 1fr;gap:var(--g1);margin-top:var(--g1)">
+    <div class="banner solid"><div class="t" style="font-size:30px"><span class="hl">정확도 검증</span> — 수집 방법이 쓸 만한지 확인</div><div class="d">같은 구간에서 실측값과 센서 추정값 비교<br>→ 턱 탐지 재현율 · 정밀도, 노면 등급 일치율<br>→ 진동 기준값 보정 (보정 · 평가 구간은 나눔)</div></div>
+    <div class="tint" style="padding:30px 40px"><div style="font-size:30px;font-weight:700;color:var(--ink)">실측 대상지</div>
+      <div style="font-size:24px;line-height:1.65;margin-top:10px"><b class="tc">1차</b>&nbsp; 제주대 캠퍼스·아라동 일대 보행로 (약 3km)<br><b class="tc">2차</b>&nbsp; 제주시 원도심 관광 접근로 (동문시장~탑동)<br><b class="tc">추가</b>&nbsp; 서귀포 주요 관광지 접근로</div></div>
+  </div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 08 / 14</div>
+</section>
+<!-- 9. ① 베이스라인 -->
+<section class="slide fx-base" id="s9">
+  <header class="topbar"><div class="pillbar"><span class="pno">04</span><h2>통행 불가 구간은 애초에 경로에 넣지 않습니다</h2><span class="sec">트랙 A · ① 베이스라인</span></div></header>
+  <div class="body">
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:64px">
+    <div>
+      <div class="sh3">통행 기준 필터 — 법령상 접근로 기준</div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:26px">
+        <div class="tint"><div class="big">1.2m <small style="font-size:44px">이상</small></div><div style="font-size:28px;color:var(--sub);margin-top:10px">유효 폭</div></div>
+        <div class="tint"><div class="big">1/12 <small style="font-size:44px">이하</small></div><div style="font-size:28px;color:var(--sub);margin-top:10px">경사도 (약 4.76°)</div></div>
+        <div class="tint"><div class="big">2cm <small style="font-size:44px">이하</small></div><div style="font-size:28px;color:var(--sub);margin-top:10px">단차 (턱 높이)</div></div>
+        <div class="tint"><div class="big" style="font-size:46px;line-height:1.15">평탄 ·<br>미끄럼 방지</div><div style="font-size:28px;color:var(--sub);margin-top:10px">노면 표면</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sh3">다익스트라(최단경로) + 이동 유형별 비용</div>
+      <div class="banner solid" style="padding:28px 36px"><div class="t" style="font-size:32px">구간 비용 = 거리 + a×경사 + b×노면 + c×턱</div><div class="t hl" style="font-size:32px;margin-top:6px">a · b · c = 이동 유형별 가중치</div></div>
+      <div style="margin-top:18px">
+        <div class="st"><b>1</b><div class="tt">필터링</div><div class="dd">기준 미달 구간을 지운 '안전 네트워크'</div></div>
+        <div class="st"><b>2</b><div class="tt">다익스트라</div><div class="dd">이동 유형별 가중치로 안전 최단경로</div></div>
+        <div class="st"><b>3</b><div class="tt">방문 순서</div><div class="dd">목적지가 여러 곳일 때 (TSP)</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:44px">
+    <div class="t">역할 = 모든 고도화의 <span class="tc">비교 기준</span></div>
+    <div class="d">한계: 필터는 모두에게 같은 기준이라, 사람마다 다른 기준이나 '오르막 먼저 피하기' 같은 순서는 가중치만으로 지키기 어렵고, 왜 이 길인지 설명하기 어렵습니다 → ② 우선순위 규칙</div>
+  </div>
+  </div>
+  <div class="src">근거: R&amp;D 계획서 (1) 베이스라인 · 〈표 1〉 휠체어·유모차 안전 통행을 위한 물리적 최소 요구사항</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 09 / 14</div>
+</section>
+<!-- 10. ② 우선순위 규칙 — 그림: 이용자가 고른다 → 거르고 좁힌다(예시 지도) → 이유와 함께 알려 준다 -->
+<section class="slide fx-rule" id="s10">
+  <header class="topbar"><div class="pillbar"><span class="pno">04</span><h2>요구를 가중치에 숨기지 않고, 순서대로 지킵니다</h2><span class="sec">트랙 A · ② 우선순위 규칙</span></div></header>
+  <div class="body">
+  <div class="flow3">
+    <div class="f-in">
+      <div class="f-k">이용자가 고른다</div>
+      <div class="f-set"><i class="ic" data-i="lock"></i><div><div class="f-n">필수 조건</div><div class="f-v">턱 2cm 이하<br>폭 1.2m 이상</div></div></div>
+      <div class="f-set"><i class="ic" data-i="list-numbers"></i><div><div class="f-n">선호 순위</div><div class="f-v">1순위 오르막<br>2순위 횡경사<br>3순위 노면</div></div></div>
+      <div class="f-set"><i class="ic" data-i="adjustments-horizontal"></i><div><div class="f-n">양보 정도</div><div class="f-v">불가 · +10% · +30%<br>+10% = 가장 좋은 길과 10% 차이까지 같게 봄</div></div></div>
+      <div class="f-note">이동 유형을 고르면 기본값이 채워지고, 이용자가 고칩니다</div>
+    </div>
+    <div class="f-arrow"><i class="ic" data-i="arrow-right"></i></div>
+    <div class="card f-mid">
+      <div class="f-k">거르고 좁힌다<span class="f-ex">(예시)</span></div>
+      <svg viewBox="0 0 660 380" fill="none">
+        <!-- [4.5] "예시 이미지가 길 같지 않음" → 지도 앱처럼: 폭 있는 도로 · 가운데 점선 · 블록 안 건물 · 골목 지름길 -->
+        <g fill="#F5F5F5">
+          <rect x="112" y="92" width="112" height="50" rx="10"/>
+          <rect x="360" y="92" width="96" height="50" rx="10"/><rect x="472" y="92" width="96" height="50" rx="10"/>
+          <rect x="478" y="216" width="96" height="40" rx="10"/>
+        </g>
+        <g stroke="#D6D6D6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 322H640M20 64H640" stroke-width="30"/>
+          <path d="M82 34V340M600 34V352" stroke-width="26"/>
+          <path d="M330 34V352" stroke-width="22"/>
+          <path d="M330 196H640" stroke-width="18"/>
+          <path d="M82 322L330 196" stroke-width="14"/>
+        </g>
+        <path d="M20 322H640M20 64H640" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="16 14"/>
+        <!-- 오르막길: 왼쪽 길로 올라가 위쪽 큰길 -->
+        <polyline points="82,322 82,64 600,64" stroke="#666666" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- 평지길: 아래쪽 큰길로 가서 오른쪽 길로 (추천) -->
+        <polyline points="82,322 600,322 600,64" stroke="var(--blue)" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+        <!-- 지름길: 골목 — 턱에서 막힘 -->
+        <polyline points="82,322 330,196 330,74 600,74" stroke="var(--red)" stroke-width="6" stroke-dasharray="12 10" stroke-linejoin="round"/>
+        <circle cx="330" cy="196" r="22" fill="var(--red)"/>
+        <path d="M320 186l20 20M340 186l-20 20" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+        <path d="M104 214H136V188Z" fill="#666666"/>
+        <circle cx="82" cy="322" r="16" fill="var(--blue)" stroke="#FFFFFF" stroke-width="4"/>
+        <path d="M600 64C590 50 582 42 582 30a18 18 0 1 1 36 0c0 12-8 20-18 34Z" fill="var(--blue)"/>
+        <circle cx="600" cy="30" r="7" fill="#FFFFFF"/>
+        <g font-size="26" font-weight="700">
+          <text x="82" y="370" fill="var(--blue)" text-anchor="middle">출발</text>
+          <text x="572" y="36" fill="var(--blue)" text-anchor="end">도착</text>
+          <text x="350" y="178" fill="var(--red)">지름길 · 턱</text>
+          <text x="146" y="212" fill="#666666">오르막길</text>
+          <text x="236" y="298" fill="var(--blue)">평지길 · 오르막 0 · 턱 0</text>
+        </g>
+      </svg>
+      <div class="f-steps">
+        <div><b>1</b><span><em>걸러내기</em>필수 조건에 안 맞는 구간 제외, 값을 모르는 구간은 빼거나 표시</span></div>
+        <div><b>2</b><span><em>후보 모으기</em>짧은 길부터 100개(k-최단), 최단의 1.5배까지</span></div>
+        <div><b>3</b><span><em>순위로 좁히기</em>1순위 허용 범위 안에서 2순위, 3순위</span></div>
+        <div><b>4</b><span><em>추천 + 대안</em>추천 1 + 성격이 다른 대안 1~2</span></div>
+      </div>
+    </div>
+    <div class="f-arrow"><i class="ic" data-i="arrow-right"></i></div>
+    <div class="banner solid f-out">
+      <div class="f-k">이유와 함께 알려 준다</div>
+      <div class="f-rec">추천<b>평지길</b></div>
+      <div class="f-why">최단보다 120m 길지만<br>오르막 0m · 턱 0개</div>
+      <div class="f-alt"><b>대안 오르막길</b><span>오르막 때문에 밀린<br>다음 후보</span></div>
+      <div class="f-pre"><b>순위 프리셋</b><span>순위만 바꾸면<br>'빠른 길 / 안락한 길'</span></div>
+    </div>
+  </div>
+  </div>
+  <div class="src">근거: R&amp;D 계획서 개인 민감도 P(user) · 지도는 설명용 예시</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 10 / 14</div>
+</section>
+<!-- 11. 트랙 B 확장 과제 — [4.8] "GNN 부분은 정확히 뭘 하겠다는 건지": 보는 것 → 이웃끼리 배운다(그래프 그림) → 내놓는 것.
+     못 잰 구간도 공개 정보(지형 경사 · 도로 종류 · 주변 시설)는 있으므로 그것과 이웃 구간의 잰 값으로 등급과 확신도를 추정 -->
+<section class="slide fx-gnn" id="s11">
+  <header class="topbar"><div class="pillbar"><span class="pno">04</span><h2>측정하지 못한 구간은, 가능하면 AI로 추정해 봅니다</h2><span class="sec">트랙 B · 확장 과제</span></div></header>
+  <div class="body">
+  <div class="flow3">
+    <div class="f-in">
+      <div class="f-k">보는 것</div>
+      <div class="f-set"><i class="ic" data-i="ruler-measure"></i><div><div class="f-n">직접 잰 구간</div><div class="f-v">통행 등급이 정답</div></div></div>
+      <div class="f-set"><i class="ic" data-i="map-2"></i><div><div class="f-n">모든 구간의 공개 정보</div><div class="f-v">지형 경사 · 도로 종류,<br>주변 시설</div></div></div>
+      <div class="f-set"><i class="ic" data-i="affiliate"></i><div><div class="f-n">이어진 이웃 구간</div><div class="f-v">가까운 길끼리 닮은 점</div></div></div>
+      <div class="f-note">못 잰 구간도 공개 정보는 있습니다</div>
+    </div>
+    <div class="f-arrow"><i class="ic" data-i="arrow-right"></i></div>
+    <div class="card f-mid">
+      <div class="f-k">이웃끼리 주고받으며 배운다<span class="f-ex">GNN(그래프 신경망)</span></div>
+      <svg viewBox="0 0 580 470" fill="none">
+        <g stroke="#B5B5B5" stroke-width="5">
+          <line x1="70" y1="80" x2="250" y2="60"/><line x1="250" y1="60" x2="440" y2="100"/><line x1="70" y1="80" x2="120" y2="250"/>
+          <line x1="250" y1="60" x2="290" y2="230"/><line x1="440" y1="100" x2="500" y2="270"/><line x1="120" y1="250" x2="290" y2="230"/>
+          <line x1="290" y1="230" x2="500" y2="270"/><line x1="120" y1="250" x2="170" y2="410"/><line x1="290" y1="230" x2="360" y2="400"/>
+          <line x1="170" y1="410" x2="360" y2="400"/><line x1="500" y1="270" x2="360" y2="400"/>
+        </g>
+        <g stroke-width="10" stroke-linecap="round">
+          <line x1="70" y1="80" x2="250" y2="60" stroke="var(--teal)"/><line x1="120" y1="250" x2="290" y2="230" stroke="var(--teal)"/>
+          <line x1="440" y1="100" x2="500" y2="270" stroke="var(--yellow)"/><line x1="170" y1="410" x2="360" y2="400" stroke="var(--red)"/>
+        </g>
+        <g stroke-width="10" stroke-linecap="round" stroke-dasharray="4 16">
+          <line x1="290" y1="230" x2="500" y2="270" stroke="var(--teal)"/><line x1="290" y1="230" x2="360" y2="400" stroke="var(--yellow)"/>
+          <line x1="250" y1="60" x2="290" y2="230" stroke="var(--teal)"/>
+        </g>
+        <g fill="var(--blue)" stroke="#FFFFFF" stroke-width="4"><circle cx="70" cy="80" r="13"/><circle cx="250" cy="60" r="13"/><circle cx="440" cy="100" r="13"/><circle cx="120" cy="250" r="13"/><circle cx="290" cy="230" r="13"/><circle cx="500" cy="270" r="13"/><circle cx="170" cy="410" r="13"/><circle cx="360" cy="400" r="13"/></g>
+      </svg>
+      <div class="lgd">
+        <div><b>선</b><span class="lsw lsw-solid"></span>직접 잰 구간<span class="lsw lsw-dash"></span>AI가 추정한 구간</div>
+        <div class="ind"><span class="lsw lsw-gray"></span>아직 모르는 구간</div>
+        <div><b>색</b><span class="lsw" style="background:var(--blue)"></span>통행 가능<span class="lsw" style="background:var(--c3)"></span>주의<span class="lsw" style="background:var(--red)"></span>통행 불가</div>
+      </div>
+    </div>
+    <div class="f-arrow"><i class="ic" data-i="arrow-right"></i></div>
+    <div class="banner solid f-out">
+      <div class="f-k">내놓는 것</div>
+      <div class="f-why">못 잰 구간마다<br>통행 등급 + 확신도</div>
+      <div class="f-alt"><b>확신이 높으면</b><span>앱에 'AI 추정'으로 표시</span></div>
+      <div class="f-alt"><b>확신이 낮으면</b><span>다음에 직접 잴 곳으로</span></div>
+      <div class="f-alt"><b>확인 방법</b><span>잰 구간을 지역째 숨겨 맞히기,<br>80% 넘으면 경로에 반영</span></div>
+    </div>
+  </div>
+  <div class="note">
+    <div class="t">먼저 ① ② 경로 엔진 · 앱 · 실측 데이터를 완성하고, 확장 과제는 가능하면 시도합니다</div>
+    <div class="d">그 밖의 확장 과제: 고른 길로 순위 배우기(개인화) · 바뀐 길 다시 찾기(강화학습) — 비전 노면 분석은 범위 밖</div>
+  </div>
+  </div>
+  <div class="src">근거: R&amp;D 계획서 (2) AI 기반</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 11 / 14</div>
+</section>
+<!-- 12. 이번 학기 목표 — 만들 것 → 이용자에게 주는 도움 -->
+<section class="slide fx-goal" id="s12">
+  <header class="topbar"><div class="pillbar"><span class="pno">05</span><h2>이번 학기에 만들 것과, 이용자에게 주는 도움</h2><span class="sec">이번 학기 목표</span></div></header>
+  <div class="body">
+  <div class="vhead"><span>만들 것</span><span></span><span>이용자에게는</span></div>
+  <div class="vlist">
+    <div class="vrow"><div class="card vmk"><div class="bubble sm"><i class="ic" data-i="device-mobile"></i></div><div><div class="tt">경로안내 앱</div><div class="dd">출발 · 도착과 이동 유형만 고르면 추천 1 + 대안, 이유까지</div></div></div>
+      <i class="ic varr" data-i="arrow-right"></i><div class="vben">출발 전에 <b>갈 수 있는 길</b>인지 알고 떠납니다</div></div>
+    <div class="vrow"><div class="card vmk"><div class="bubble sm"><i class="ic" data-i="ruler-measure"></i></div><div><div class="tt">실측 접근성 데이터</div><div class="dd">제주대 · 원도심 대상 구간의 턱 · 폭 · 경사 · 노면</div></div></div>
+      <i class="ic varr" data-i="arrow-right"></i><div class="vben">지도에 없던 <b>턱 · 경사</b>를 미리 봅니다</div></div>
+    <div class="vrow"><div class="card vmk"><div class="bubble sm"><i class="ic" data-i="cpu"></i></div><div><div class="tt">부착형 센서 노드</div><div class="dd">휠체어 · 유모차에 붙여 다니며 노면을 잽니다</div></div></div>
+      <i class="ic varr" data-i="arrow-right"></i><div class="vben"><b>다닐수록</b> 지도가 정확해집니다</div></div>
+    <div class="vrow"><div class="card vmk"><div class="bubble sm"><i class="ic" data-i="wheelchair"></i></div><div><div class="tt">이동 유형별 기본값</div><div class="dd">휠체어 · 유모차 · 보행기 등 유형을 고르면 조건이 채워집니다</div></div></div>
+      <i class="ic varr" data-i="arrow-right"></i><div class="vben">처음부터 <b>내 이동 방식</b>에 맞는 기준으로</div></div>
+  </div>
+  <div class="banner solid" style="margin-top:26px"><div class="t" style="font-size:30px"><span class="hl" style="margin-right:18px">확인</span>장애인복지관 · 자립생활센터와 실이용자 동행 검증 — 못 미친 항목도 그대로 보고합니다</div></div>
+  </div>
+  <div class="src">확장 과제(가능하면): 고른 길로 순위 배우기(개인화) · 측정 못 한 구간 추정(GNN) · 바뀐 길 다시 찾기(강화학습)</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 12 / 14</div>
+</section>
+<!-- 13. 팀 구성 — [4.5] 소프트웨어 2명 · 하드웨어 2명 (AI는 확장 과제라 역할에서 뺌)
+     [4.8] "역할은 하드웨어 소프트웨어로 나누고 그 안에서 잘 분배" — 빈 일(보행 그래프 · 맵매칭 · 위치정보 동의 · 동행 검증 · 2인 1조 실측)을 나눠 맡고
+     앱 · 백엔드 · 통합 1인 몰림을 풂 (통합 시연은 팀장, 정확도 검증은 센서 담당) -->
+<section class="slide fx-team" id="s13">
+  <header class="topbar"><div class="pillbar"><span class="pno">06</span><h2>4인 · 소프트웨어와 하드웨어, 두 명씩 맡습니다</h2><span class="sec">팀 구성</span></div></header>
+  <div class="lead" style="font-size:27px">컴퓨터공학과 3학년 4인 — 전원 자료구조·알고리즘, 데이터베이스, 모바일, 인공지능, 임베디드 이수</div>
+  <div class="body">
+  <div class="team">
+    <div class="tgrp"><div class="tg sw"><i class="ic" data-i="code"></i>소프트웨어</div>
+      <div class="grid">
+        <div class="row"><div class="nm"><b>이은</b><span>팀원</span></div>
+          <div class="pt"><i class="ic" data-i="database"></i><b>경로 엔진 ·<br>보행 그래프</b></div>
+          <ul class="wk"><li>보행 그래프 · 구간 속성 DB 스키마</li><li>① 베이스라인 · ② 우선순위 규칙 엔진</li><li>GPS 기록을 보도 구간에 맞추기 (맵매칭)</li></ul></div>
+        <div class="row"><div class="nm"><b>염지석</b><span>팀원</span></div>
+          <div class="pt"><i class="ic" data-i="device-mobile"></i><b>앱 프론트 ·<br>백엔드</b></div>
+          <ul class="wk"><li>경로안내 · 신고 앱 화면 (지도)</li><li>백엔드 API · 수집 기록 저장</li><li>센서 블루투스 연동 · 위치정보 동의</li></ul></div>
+      </div></div>
+    <div class="tgrp"><div class="tg hw"><i class="ic" data-i="cpu"></i>하드웨어</div>
+      <div class="grid">
+        <div class="row"><div class="nm"><b>강승준</b><span>팀장</span></div>
+          <div class="pt"><i class="ic" data-i="ruler-measure"></i><b>총괄 ·<br>현장 실측</b></div>
+          <ul class="wk"><li>일정 · 지도교수 · 기관 협의 창구</li><li>실측 프로토콜 · 현장 실측 (2인 1조)</li><li>통합 시연 · 이용자 동행 검증</li></ul></div>
+        <div class="row"><div class="nm"><b>양인권</b><span>팀원</span></div>
+          <div class="pt"><i class="ic" data-i="cpu"></i><b>센서 장비 ·<br>정확도 검증</b></div>
+          <ul class="wk"><li>센서 노드 회로 · 펌웨어 · 부착</li><li>진동으로 노면 등급 · 턱 판정</li><li>실측값과 센서값 비교 · 정확도 검증</li></ul></div>
+      </div></div>
+  </div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 13 / 14</div>
+</section>
+<!-- 14. 마무리 -->
+<section class="slide end" id="s14">
+  <header class="topbar"><div class="pillbar"><span class="cap">2026-2학기 제주대학교 캡스톤디자인</span><span class="sec">지도교수 PT</span></div></header>
+  <div class="body">
+    <div class="end-sub">팀 길동무</div>
+    <h1><span class="l1">같은 길도, 사람마다</span><br><span class="l2">다른 길을 찾아 줍니다</span></h1>
+    <div class="three">
+      <div class="card"><b>의미 있는</b><p>국내에서 찾기 어려운 구간 단위 배리어프리 경로 — 데이터부터 직접 만든다</p></div>
+      <div class="card"><b>실현 가능한</b><p>경로 엔진 · 앱 · 실측 데이터부터 완성 — AI는 확장 과제로</p></div>
+      <div class="card"><b>사회에 도움이 되는</b><p>사람마다 다른 길을 찾아 주고, 쓸수록 정확해지는 지도</p></div>
+    </div>
+    <div class="end-info">감사합니다 &nbsp;·&nbsp; 팀 길동무 &nbsp;·&nbsp; 지도교수 길준민</div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 14 / 14</div>
+</section>
+</div>
+<div id="hint">화면 왼쪽 클릭·← 이전 &nbsp;|&nbsp; 오른쪽 클릭·→ 다음 &nbsp;|&nbsp; F 전체화면</div>
+
+<script>
+/* Tabler Icons (MIT) — tools/inline_icons.js index_v4.8.html 이 data-i 이름을 모아 채움 */
+const ICONS = {"adjustments-horizontal":"<path d=\"M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 6l8 0\" /> <path d=\"M16 6l4 0\" /> <path d=\"M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 12l2 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 18l11 0\" /> <path d=\"M19 18l1 0\" />","affiliate":"<path d=\"M5.931 6.936l1.275 4.249m5.607 5.609l4.251 1.275\" /> <path d=\"M11.683 12.317l5.759 -5.759\" /> <path d=\"M4 5.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M17 5.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M17 18.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M4 15.5a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0\" />","arrow-back-up":"<path d=\"M9 14l-4 -4l4 -4\" /> <path d=\"M5 10h11a4 4 0 1 1 0 8h-1\" />","arrow-right":"<path d=\"M5 12l14 0\" /> <path d=\"M13 18l6 -6\" /> <path d=\"M13 6l6 6\" />","baby-carriage":"<path d=\"M6 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M16 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M2 5h2.5l1.632 4.897a6 6 0 0 0 5.693 4.103h2.675a5.5 5.5 0 0 0 0 -11h-.5v6\" /> <path d=\"M6 9h14\" /> <path d=\"M9 17l1 -3\" /> <path d=\"M16 14l1 3\" />","barrier-block":"<path d=\"M4 8a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v7a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1l0 -7\" /> <path d=\"M7 16v4\" /> <path d=\"M7.5 16l9 -9\" /> <path d=\"M13.5 16l6.5 -6.5\" /> <path d=\"M4 13.5l6.5 -6.5\" /> <path d=\"M17 16v4\" /> <path d=\"M5 20h4\" /> <path d=\"M15 20h4\" /> <path d=\"M17 7v-2\" /> <path d=\"M7 7v-2\" />","check":"<path d=\"M5 12l5 5l10 -10\" />","code":"<path d=\"M7 8l-4 4l4 4\" /> <path d=\"M17 8l4 4l-4 4\" /> <path d=\"M14 4l-4 16\" />","cpu":"<path d=\"M5 6a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -12\" /> <path d=\"M9 9h6v6h-6l0 -6\" /> <path d=\"M3 10h2\" /> <path d=\"M3 14h2\" /> <path d=\"M10 3v2\" /> <path d=\"M14 3v2\" /> <path d=\"M21 10h-2\" /> <path d=\"M21 14h-2\" /> <path d=\"M14 21v-2\" /> <path d=\"M10 21v-2\" />","database":"<path d=\"M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0\" /> <path d=\"M4 6v6a8 3 0 0 0 16 0v-6\" /> <path d=\"M4 12v6a8 3 0 0 0 16 0v-6\" />","device-mobile":"<path d=\"M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14\" /> <path d=\"M11 4h2\" /> <path d=\"M12 17v.01\" />","disabled-2":"<path d=\"M15 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M9 11a5 5 0 1 0 3.95 7.95\" /> <path d=\"M19 20l-4 -5h-4l3 -5l-4 -3l-4 1\" />","friends":"<path d=\"M5 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M5 22v-5l-1 -1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5\" /> <path d=\"M15 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4\" />","list-numbers":"<path d=\"M11 6h9\" /> <path d=\"M11 12h9\" /> <path d=\"M12 18h8\" /> <path d=\"M4 16a2 2 0 1 1 4 0c0 .591 -.5 1 -1 1.5l-3 2.5h4\" /> <path d=\"M6 10v-6l-2 2\" />","lock":"<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6\" /> <path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\" /> <path d=\"M8 11v-4a4 4 0 1 1 8 0v4\" />","map-2":"<path d=\"M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5\" /> <path d=\"M9 4v13\" /> <path d=\"M15 7v5.5\" /> <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" /> <path d=\"M19 18v.01\" />","map-pin":"<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" /> <path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0\" />","old":"<path d=\"M11 21l-1 -4l-2 -3v-6\" /> <path d=\"M5 14l-1 -3l4 -3l3 2l3 .5\" /> <path d=\"M7 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M7 17l-2 4\" /> <path d=\"M16 21v-8.5a1.5 1.5 0 0 1 3 0v.5\" />","refresh":"<path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" /> <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" />","ruler-measure":"<path d=\"M19.875 12c.621 0 1.125 .512 1.125 1.143v5.714c0 .631 -.504 1.143 -1.125 1.143h-15.875a1 1 0 0 1 -1 -1v-5.857c0 -.631 .504 -1.143 1.125 -1.143h15.75\" /> <path d=\"M9 12v2\" /> <path d=\"M6 12v3\" /> <path d=\"M12 12v3\" /> <path d=\"M18 12v3\" /> <path d=\"M15 12v2\" /> <path d=\"M3 3v4\" /> <path d=\"M3 5h18\" /> <path d=\"M21 3v4\" />","stairs-up":"<path d=\"M22 6h-5v5h-5v5h-5v5h-5\" /> <path d=\"M6 10v-7\" /> <path d=\"M3 6l3 -3l3 3\" />","trending-up":"<path d=\"M3 17l6 -6l4 4l8 -8\" /> <path d=\"M14 7l7 0l0 7\" />","users":"<path d=\"M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" /> <path d=\"M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\" /> <path d=\"M16 3.13a4 4 0 0 1 0 7.75\" /> <path d=\"M21 21v-2a4 4 0 0 0 -3 -3.85\" />","walk":"<path d=\"M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M7 21l3 -4\" /> <path d=\"M16 21l-2 -4l-3 -3l1 -6\" /> <path d=\"M6 12l2 -3l4 -1l3 3l3 1\" />","wheelchair":"<path d=\"M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\" /> <path d=\"M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M19 17a3 3 0 0 0 -3 -3h-3.4\" /> <path d=\"M3 3h1a2 2 0 0 1 2 2v6\" /> <path d=\"M6 8h11\" /> <path d=\"M15 8v6\" />","x":"<path d=\"M18 6l-12 12\" /> <path d=\"M6 6l12 12\" />"};
+
+/* 아이콘 채우기 */
+document.querySelectorAll('[data-i]').forEach(el => {
+  const p = ICONS[el.dataset.i];
+  if (p) el.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">' + p + '</svg>';
+});
+
+/* ── 쪽 넘김 ── */
+const deck = document.getElementById('deck');
+const slides = [...document.querySelectorAll('.slide')];
+let cur = Math.min(Math.max((parseInt(location.hash.slice(1)) || 1) - 1, 0), slides.length - 1);
+const hint = document.getElementById('hint');
+
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  deck.style.transform = `translate(-50%,-50%) scale(${s})`;
+}
+function show(i) {
+  cur = Math.min(Math.max(i, 0), slides.length - 1);
+  slides.forEach((el, k) => el.classList.toggle('on', k === cur));
+  history.replaceState(null, '', '#' + (cur + 1));
+  if (cur !== 0) hint.style.opacity = 0;  /* [4.8] 조작 안내는 첫 장에서만 — 다른 장의 출처 줄을 가리지 않게 */
+}
+const next = () => show(cur + 1), prev = () => show(cur - 1);
+
+addEventListener('resize', fit);
+addEventListener('click', e => (e.clientX < innerWidth / 2 ? prev() : next()));
+addEventListener('contextmenu', e => { e.preventDefault(); prev(); });
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key === 'f' || e.key === 'F') {
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  }
+});
+let tx = null;
+addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (dx < -50) next(); else if (dx > 50) prev();
+});
+setTimeout(() => hint.style.opacity = 0, 3500);
+
+fit(); show(cur);
+</script>
+</body>
+</html>
