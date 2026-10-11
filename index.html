@@ -280,6 +280,20 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
 .fx-rule .f-mid svg{height:372px;width:auto;margin:0 auto}
 .fx-rule .f-why{font-size:33px}
 .fx-rule .f-alt span,.fx-rule .f-pre span{font-size:28px}
+/* [10.11] 부록 · 과제 구분: 공학교육(수집) → RISE(추천) 두 칸 + 가운데 화살표 (사용자 2026-10-11) */
+.fx-split .sp{display:grid;grid-template-columns:1fr 120px 1fr;align-items:stretch}
+.fx-split .sp .card{padding:40px 46px;display:flex;flex-direction:column}
+.fx-split .sp .pill{align-self:flex-start;font-size:25px}
+.fx-split .sp .me{background:var(--blue);color:#fff}
+.fx-split .sp-t{font-size:46px;font-weight:800;color:var(--ink);margin:22px 0 12px;letter-spacing:-1px}
+.fx-split .sp-t b{color:var(--blue)}
+.fx-split .it{display:flex;align-items:center;gap:28px;padding:28px 0;border-bottom:2px solid var(--line)}
+.fx-split .it:last-child{border-bottom:none;padding-bottom:0}
+.fx-split .it .tt{font-size:34px;font-weight:700;color:var(--ink)}
+.fx-split .it .dd{font-size:27px;color:var(--sub);line-height:1.5;margin-top:6px}
+.fx-split .sp-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--mid)}
+.fx-split .sp-mid .ic{font-size:56px}
+.fx-split .sp-mid span{font-size:22px;font-weight:700;color:var(--sub);text-align:center;line-height:1.3}
 /* 쪽 이동 힌트(첫 장에서만, 처음 몇 초) */
 #hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);font:16px Pretendard,"Malgun Gothic",sans-serif;
   color:#fff;background:rgba(0,0,0,.55);padding:8px 16px;border-radius:999px;transition:opacity .3s;pointer-events:none}
@@ -317,7 +331,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
     <text x="640" y="790" fill="var(--red)" font-size="32" text-anchor="end">턱·급경사 구간은 경로에서 제외</text>
   </svg></div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 01 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 01 / 15</div>
 </section>
 <!-- 2. 목차 -->
 <section class="slide toc" id="s2">
@@ -334,7 +348,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
       <div class="tp"><b>06</b><span>팀 구성</span></div>
     </div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 02 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 02 / 15</div>
 </section>
 <!-- 3. 문제 -->
 <section class="slide fx-prob" id="s3">
@@ -358,7 +372,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
   <div class="banner solid" style="margin-top:44px"><div class="t">'평탄하고 턱 없는 길'이 필요한 사람은 <span class="hl">특정 소수가 아닙니다.</span></div></div>
   </div>
   <div class="src">출처: 보건복지부 2025년도 등록장애인 현황(2025년 말) · 국민건강보험공단 2025 노인장기요양보험 통계연보 · 제주특별자치도 관광객 입도 통계</div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 03 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 03 / 15</div>
 </section>
 <!-- 4. 문제의 두 겹 -->
 <section class="slide" id="s4">
@@ -389,7 +403,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
     <div class="d">데이터를 직접 모으는 일과, 그 위에서 사람마다 다른 길을 고르는 알고리즘을 함께 개발합니다</div>
   </div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 04 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 04 / 15</div>
 </section>
 <!-- 5. 필요한데 없는 데이터 -->
 <section class="slide fx-need" id="s5">
@@ -419,7 +433,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
   </div>
   </div>
   <div class="src">근거: R&amp;D 계획서 · 공개 데이터 조사(OpenStreetMap 태그 · 전국횡단보도표준데이터)</div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 05 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 05 / 15</div>
 </section>
 <!-- 6. 차별성 -->
 <section class="slide" id="s6">
@@ -436,7 +450,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
     <tr class="me"><td style="font-size:32px">길동무<span>본 과제 (이번 학기 목표)</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td><td><span class="pill" style="background:#fff">목표</span></td></tr>
   </table>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 06 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 06 / 15</div>
 </section>
 <!-- 7. 해결 방안 — [4.8] 순환도: 이용자 이동 → 트랙 C 데이터 모으기 → 트랙 A 길 골라 주기 → 이용자 (반드시 도는 고리는 실선),
      트랙 B(확장 과제)는 점선 — "어디서 시작해 어디로 도는지 모름", "선택 과제인 B가 고리 한 칸", "도식에 이용자가 없음" -->
@@ -480,7 +494,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
     </div>
   </div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 07 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 07 / 15</div>
 </section>
 <!-- 8. 트랙 C -->
 <section class="slide fx-trackc" id="s8">
@@ -506,7 +520,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
       <div style="font-size:24px;line-height:1.65;margin-top:10px"><b class="tc">1차</b>&nbsp; 제주대 캠퍼스·아라동 일대 보행로 (약 3km)<br><b class="tc">2차</b>&nbsp; 제주시 원도심 관광 접근로 (동문시장~탑동)<br><b class="tc">추가</b>&nbsp; 서귀포 주요 관광지 접근로</div></div>
   </div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 08 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 08 / 15</div>
 </section>
 <!-- 9. ① 베이스라인 -->
 <section class="slide fx-base" id="s9">
@@ -538,7 +552,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
   </div>
   </div>
   <div class="src">근거: R&amp;D 계획서 (1) 베이스라인 · 〈표 1〉 휠체어·유모차 안전 통행을 위한 물리적 최소 요구사항</div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 09 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 09 / 15</div>
 </section>
 <!-- 10. ② 우선순위 규칙 — 그림: 이용자가 고른다 → 거르고 좁힌다(예시 지도) → 이유와 함께 알려 준다 -->
 <section class="slide fx-rule" id="s10">
@@ -608,7 +622,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
   </div>
   </div>
   <div class="src">근거: R&amp;D 계획서 개인 민감도 P(user) · 지도는 설명용 예시</div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 10 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 10 / 15</div>
 </section>
 <!-- 11. 트랙 B 확장 과제 — [4.8] "GNN 부분은 정확히 뭘 하겠다는 건지": 보는 것 → 이웃끼리 배운다(그래프 그림) → 내놓는 것.
      못 잰 구간도 공개 정보(지형 경사 · 도로 종류 · 주변 시설)는 있으므로 그것과 이웃 구간의 잰 값으로 등급과 확신도를 추정 -->
@@ -664,7 +678,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
   </div>
   </div>
   <div class="src">근거: R&amp;D 계획서 (2) AI 기반</div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 11 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 11 / 15</div>
 </section>
 <!-- 12. 이번 학기 목표 — 만들 것 → 이용자에게 주는 도움 -->
 <section class="slide fx-goal" id="s12">
@@ -684,7 +698,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
   <div class="banner solid" style="margin-top:26px"><div class="t" style="font-size:30px"><span class="hl" style="margin-right:18px">확인</span>장애인복지관 · 자립생활센터와 실이용자 동행 검증 — 못 미친 항목도 그대로 보고합니다</div></div>
   </div>
   <div class="src">확장 과제(가능하면): 고른 길로 순위 배우기(개인화) · 측정 못 한 구간 추정(GNN) · 바뀐 길 다시 찾기(강화학습)</div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 12 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 12 / 15</div>
 </section>
 <!-- 13. 팀 구성 — [4.5] 소프트웨어 2명 · 하드웨어 2명 (AI는 확장 과제라 역할에서 뺌)
      [4.8] "역할은 하드웨어 소프트웨어로 나누고 그 안에서 잘 분배" — 빈 일(보행 그래프 · 맵매칭 · 위치정보 동의 · 동행 검증 · 2인 1조 실측)을 나눠 맡고
@@ -714,7 +728,7 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
       </div></div>
   </div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 13 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 13 / 15</div>
 </section>
 <!-- 14. 마무리 -->
 <section class="slide end" id="s14">
@@ -729,14 +743,37 @@ table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:27px;ma
     </div>
     <div class="end-info">감사합니다 &nbsp;·&nbsp; 팀 길동무 &nbsp;·&nbsp; 지도교수 길준민</div>
   </div>
-  <div class="foot">길동무 &nbsp;·&nbsp; 14 / 14</div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 14 / 15</div>
+</section>
+<!-- 15. 부록 · 과제 구분 — [10.11] 사용자: 공학교육(창의융합) = 직접 수집 · 자동 수집 파이프라인, RISE = 수집 정보 바탕 요구별 동선 추천 -->
+<section class="slide fx-split" id="s15">
+  <header class="topbar"><div class="pillbar"><span class="pno">부록</span><h2>같은 주제, 두 과제는 맡는 일이 다릅니다</h2><span class="sec">과제 구분</span></div></header>
+  <div class="body">
+  <div class="sp">
+    <div class="card">
+      <span class="pill">공학교육혁신센터 · 창의융합 캡스톤</span>
+      <div class="sp-t"><b>데이터를</b> 모읍니다</div>
+      <div class="it"><div class="bubble sm"><i class="ic" data-i="ruler-measure"></i></div><div><div class="tt">직접 수집</div><div class="dd">보행보조기구에 붙인 장치와 현장 실측으로<br>턱 · 경사 · 노면을 잽니다</div></div></div>
+      <div class="it"><div class="bubble sm"><i class="ic" data-i="database-import"></i></div><div><div class="tt">자동 수집 파이프라인</div><div class="dd">다닌 기록이 자동으로 올라가<br>정리 · 구간 연결 · 저장까지 이어집니다</div></div></div>
+    </div>
+    <div class="sp-mid"><i class="ic" data-i="arrow-right"></i><span>수집한<br>정보</span></div>
+    <div class="card">
+      <span class="pill me">RISE · 기업연계형 캡스톤</span>
+      <div class="sp-t"><b>길을</b> 고릅니다</div>
+      <div class="it"><div class="bubble sm"><i class="ic" data-i="wheelchair"></i></div><div><div class="tt">요구 입력</div><div class="dd">이동 유형(휠체어 · 유모차 · 보행기)과<br>꼭 지킬 조건을 고릅니다</div></div></div>
+      <div class="it"><div class="bubble sm"><i class="ic" data-i="route"></i></div><div><div class="tt">요구별 동선 추천</div><div class="dd">수집한 정보를 바탕으로 요구에 맞는 동선을<br>추천합니다 — 추천 1 + 대안, 이유까지</div></div></div>
+    </div>
+  </div>
+  <div class="banner" style="margin-top:32px"><div class="t">모으는 일은 <span class="hl">공학교육</span>, 그 정보로 길을 고르는 일은 <span class="hl">RISE</span>가 맡습니다</div></div>
+  </div>
+  <div class="foot">길동무 &nbsp;·&nbsp; 15 / 15</div>
 </section>
 </div>
 <div id="hint">화면 왼쪽 클릭·← 이전 &nbsp;|&nbsp; 오른쪽 클릭·→ 다음 &nbsp;|&nbsp; F 전체화면</div>
 
 <script>
 /* Tabler Icons (MIT) — tools/inline_icons.js index_v4.8.html 이 data-i 이름을 모아 채움 */
-const ICONS = {"adjustments-horizontal":"<path d=\"M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 6l8 0\" /> <path d=\"M16 6l4 0\" /> <path d=\"M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 12l2 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 18l11 0\" /> <path d=\"M19 18l1 0\" />","affiliate":"<path d=\"M5.931 6.936l1.275 4.249m5.607 5.609l4.251 1.275\" /> <path d=\"M11.683 12.317l5.759 -5.759\" /> <path d=\"M4 5.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M17 5.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M17 18.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M4 15.5a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0\" />","arrow-back-up":"<path d=\"M9 14l-4 -4l4 -4\" /> <path d=\"M5 10h11a4 4 0 1 1 0 8h-1\" />","arrow-right":"<path d=\"M5 12l14 0\" /> <path d=\"M13 18l6 -6\" /> <path d=\"M13 6l6 6\" />","baby-carriage":"<path d=\"M6 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M16 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M2 5h2.5l1.632 4.897a6 6 0 0 0 5.693 4.103h2.675a5.5 5.5 0 0 0 0 -11h-.5v6\" /> <path d=\"M6 9h14\" /> <path d=\"M9 17l1 -3\" /> <path d=\"M16 14l1 3\" />","barrier-block":"<path d=\"M4 8a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v7a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1l0 -7\" /> <path d=\"M7 16v4\" /> <path d=\"M7.5 16l9 -9\" /> <path d=\"M13.5 16l6.5 -6.5\" /> <path d=\"M4 13.5l6.5 -6.5\" /> <path d=\"M17 16v4\" /> <path d=\"M5 20h4\" /> <path d=\"M15 20h4\" /> <path d=\"M17 7v-2\" /> <path d=\"M7 7v-2\" />","check":"<path d=\"M5 12l5 5l10 -10\" />","code":"<path d=\"M7 8l-4 4l4 4\" /> <path d=\"M17 8l4 4l-4 4\" /> <path d=\"M14 4l-4 16\" />","cpu":"<path d=\"M5 6a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -12\" /> <path d=\"M9 9h6v6h-6l0 -6\" /> <path d=\"M3 10h2\" /> <path d=\"M3 14h2\" /> <path d=\"M10 3v2\" /> <path d=\"M14 3v2\" /> <path d=\"M21 10h-2\" /> <path d=\"M21 14h-2\" /> <path d=\"M14 21v-2\" /> <path d=\"M10 21v-2\" />","database":"<path d=\"M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0\" /> <path d=\"M4 6v6a8 3 0 0 0 16 0v-6\" /> <path d=\"M4 12v6a8 3 0 0 0 16 0v-6\" />","device-mobile":"<path d=\"M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14\" /> <path d=\"M11 4h2\" /> <path d=\"M12 17v.01\" />","disabled-2":"<path d=\"M15 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M9 11a5 5 0 1 0 3.95 7.95\" /> <path d=\"M19 20l-4 -5h-4l3 -5l-4 -3l-4 1\" />","friends":"<path d=\"M5 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M5 22v-5l-1 -1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5\" /> <path d=\"M15 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4\" />","list-numbers":"<path d=\"M11 6h9\" /> <path d=\"M11 12h9\" /> <path d=\"M12 18h8\" /> <path d=\"M4 16a2 2 0 1 1 4 0c0 .591 -.5 1 -1 1.5l-3 2.5h4\" /> <path d=\"M6 10v-6l-2 2\" />","lock":"<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6\" /> <path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\" /> <path d=\"M8 11v-4a4 4 0 1 1 8 0v4\" />","map-2":"<path d=\"M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5\" /> <path d=\"M9 4v13\" /> <path d=\"M15 7v5.5\" /> <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" /> <path d=\"M19 18v.01\" />","map-pin":"<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" /> <path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0\" />","old":"<path d=\"M11 21l-1 -4l-2 -3v-6\" /> <path d=\"M5 14l-1 -3l4 -3l3 2l3 .5\" /> <path d=\"M7 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M7 17l-2 4\" /> <path d=\"M16 21v-8.5a1.5 1.5 0 0 1 3 0v.5\" />","refresh":"<path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" /> <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" />","ruler-measure":"<path d=\"M19.875 12c.621 0 1.125 .512 1.125 1.143v5.714c0 .631 -.504 1.143 -1.125 1.143h-15.875a1 1 0 0 1 -1 -1v-5.857c0 -.631 .504 -1.143 1.125 -1.143h15.75\" /> <path d=\"M9 12v2\" /> <path d=\"M6 12v3\" /> <path d=\"M12 12v3\" /> <path d=\"M18 12v3\" /> <path d=\"M15 12v2\" /> <path d=\"M3 3v4\" /> <path d=\"M3 5h18\" /> <path d=\"M21 3v4\" />","stairs-up":"<path d=\"M22 6h-5v5h-5v5h-5v5h-5\" /> <path d=\"M6 10v-7\" /> <path d=\"M3 6l3 -3l3 3\" />","trending-up":"<path d=\"M3 17l6 -6l4 4l8 -8\" /> <path d=\"M14 7l7 0l0 7\" />","users":"<path d=\"M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" /> <path d=\"M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\" /> <path d=\"M16 3.13a4 4 0 0 1 0 7.75\" /> <path d=\"M21 21v-2a4 4 0 0 0 -3 -3.85\" />","walk":"<path d=\"M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M7 21l3 -4\" /> <path d=\"M16 21l-2 -4l-3 -3l1 -6\" /> <path d=\"M6 12l2 -3l4 -1l3 3l3 1\" />","wheelchair":"<path d=\"M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\" /> <path d=\"M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M19 17a3 3 0 0 0 -3 -3h-3.4\" /> <path d=\"M3 3h1a2 2 0 0 1 2 2v6\" /> <path d=\"M6 8h11\" /> <path d=\"M15 8v6\" />","x":"<path d=\"M18 6l-12 12\" /> <path d=\"M6 6l12 12\" />"};
+const ICONS = {"adjustments-horizontal":"<path d=\"M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 6l8 0\" /> <path d=\"M16 6l4 0\" /> <path d=\"M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 12l2 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M4 18l11 0\" /> <path d=\"M19 18l1 0\" />","affiliate":"<path d=\"M5.931 6.936l1.275 4.249m5.607 5.609l4.251 1.275\" /> <path d=\"M11.683 12.317l5.759 -5.759\" /> <path d=\"M4 5.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M17 5.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M17 18.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0\" /> <path d=\"M4 15.5a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0\" />","arrow-back-up":"<path d=\"M9 14l-4 -4l4 -4\" /> <path d=\"M5 10h11a4 4 0 1 1 0 8h-1\" />","arrow-right":"<path d=\"M5 12l14 0\" /> <path d=\"M13 18l6 -6\" /> <path d=\"M13 6l6 6\" />","baby-carriage":"<path d=\"M6 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M16 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M2 5h2.5l1.632 4.897a6 6 0 0 0 5.693 4.103h2.675a5.5 5.5 0 0 0 0 -11h-.5v6\" /> <path d=\"M6 9h14\" /> <path d=\"M9 17l1 -3\" /> <path d=\"M16 14l1 3\" />","barrier-block":"<path d=\"M4 8a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v7a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1l0 -7\" /> <path d=\"M7 16v4\" /> <path d=\"M7.5 16l9 -9\" /> <path d=\"M13.5 16l6.5 -6.5\" /> <path d=\"M4 13.5l6.5 -6.5\" /> <path d=\"M17 16v4\" /> <path d=\"M5 20h4\" /> <path d=\"M15 20h4\" /> <path d=\"M17 7v-2\" /> <path d=\"M7 7v-2\" />","check":"<path d=\"M5 12l5 5l10 -10\" />","code":"<path d=\"M7 8l-4 4l4 4\" /> <path d=\"M17 8l4 4l-4 4\" /> <path d=\"M14 4l-4 16\" />","cpu":"<path d=\"M5 6a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -12\" /> <path d=\"M9 9h6v6h-6l0 -6\" /> <path d=\"M3 10h2\" /> <path d=\"M3 14h2\" /> <path d=\"M10 3v2\" /> <path d=\"M14 3v2\" /> <path d=\"M21 10h-2\" /> <path d=\"M21 14h-2\" /> <path d=\"M14 21v-2\" /> <path d=\"M10 21v-2\" />","database":"<path d=\"M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0\" /> <path d=\"M4 6v6a8 3 0 0 0 16 0v-6\" /> <path d=\"M4 12v6a8 3 0 0 0 16 0v-6\" />","database-import":"<path d=\"M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3\" /> <path d=\"M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68 -.05 2.454 -.144m5.546 -2.856v-6\" /> <path d=\"M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341 -.002 .51 -.006\" /> <path d=\"M19 22v-6\" /> <path d=\"M22 19l-3 -3l-3 3\" />","device-mobile":"<path d=\"M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14\" /> <path d=\"M11 4h2\" /> <path d=\"M12 17v.01\" />","disabled-2":"<path d=\"M15 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M9 11a5 5 0 1 0 3.95 7.95\" /> <path d=\"M19 20l-4 -5h-4l3 -5l-4 -3l-4 1\" />","friends":"<path d=\"M5 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M5 22v-5l-1 -1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5\" /> <path d=\"M15 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4\" />","list-numbers":"<path d=\"M11 6h9\" /> <path d=\"M11 12h9\" /> <path d=\"M12 18h8\" /> <path d=\"M4 16a2 2 0 1 1 4 0c0 .591 -.5 1 -1 1.5l-3 2.5h4\" /> <path d=\"M6 10v-6l-2 2\" />","lock":"<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6\" /> <path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\" /> <path d=\"M8 11v-4a4 4 0 1 1 8 0v4\" />","map-2":"<path d=\"M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5\" /> <path d=\"M9 4v13\" /> <path d=\"M15 7v5.5\" /> <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" /> <path d=\"M19 18v.01\" />","map-pin":"<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" /> <path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0\" />","old":"<path d=\"M11 21l-1 -4l-2 -3v-6\" /> <path d=\"M5 14l-1 -3l4 -3l3 2l3 .5\" /> <path d=\"M7 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M7 17l-2 4\" /> <path d=\"M16 21v-8.5a1.5 1.5 0 0 1 3 0v.5\" />","refresh":"<path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" /> <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" />","route":"<path d=\"M3 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0\" /> <path d=\"M19 7a2 2 0 1 0 0 -4a2 2 0 0 0 0 4\" /> <path d=\"M11 19h5.5a3.5 3.5 0 0 0 0 -7h-8a3.5 3.5 0 0 1 0 -7h4.5\" />","ruler-measure":"<path d=\"M19.875 12c.621 0 1.125 .512 1.125 1.143v5.714c0 .631 -.504 1.143 -1.125 1.143h-15.875a1 1 0 0 1 -1 -1v-5.857c0 -.631 .504 -1.143 1.125 -1.143h15.75\" /> <path d=\"M9 12v2\" /> <path d=\"M6 12v3\" /> <path d=\"M12 12v3\" /> <path d=\"M18 12v3\" /> <path d=\"M15 12v2\" /> <path d=\"M3 3v4\" /> <path d=\"M3 5h18\" /> <path d=\"M21 3v4\" />","stairs-up":"<path d=\"M22 6h-5v5h-5v5h-5v5h-5\" /> <path d=\"M6 10v-7\" /> <path d=\"M3 6l3 -3l3 3\" />","trending-up":"<path d=\"M3 17l6 -6l4 4l8 -8\" /> <path d=\"M14 7l7 0l0 7\" />","users":"<path d=\"M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" /> <path d=\"M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\" /> <path d=\"M16 3.13a4 4 0 0 1 0 7.75\" /> <path d=\"M21 21v-2a4 4 0 0 0 -3 -3.85\" />","walk":"<path d=\"M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" /> <path d=\"M7 21l3 -4\" /> <path d=\"M16 21l-2 -4l-3 -3l1 -6\" /> <path d=\"M6 12l2 -3l4 -1l3 3l3 1\" />","wheelchair":"<path d=\"M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\" /> <path d=\"M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" /> <path d=\"M19 17a3 3 0 0 0 -3 -3h-3.4\" /> <path d=\"M3 3h1a2 2 0 0 1 2 2v6\" /> <path d=\"M6 8h11\" /> <path d=\"M15 8v6\" />","x":"<path d=\"M18 6l-12 12\" /> <path d=\"M6 6l12 12\" />"};
 
 /* 아이콘 채우기 */
 document.querySelectorAll('[data-i]').forEach(el => {
